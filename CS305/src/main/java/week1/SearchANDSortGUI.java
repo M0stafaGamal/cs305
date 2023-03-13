@@ -76,9 +76,8 @@ public class SearchANDSortGUI extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -480,53 +479,39 @@ public class SearchANDSortGUI extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setBackground(new java.awt.Color(255, 102, 51));
-        jButton5.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
-        jButton5.setText("Generate and Plot");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
         jLabel15.setBackground(new java.awt.Color(255, 255, 255));
         jLabel15.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
-        jLabel15.setText("    Linear Search");
+        jLabel15.setText("             Linear Search     AND      Exchange Sort");
 
-        jLabel16.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel16.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
-        jLabel16.setText("    Exchange  Sort");
+        jLabel17.setText("&");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(188, 188, 188)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton4)
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton5))))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(211, 211, 211)
-                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(259, Short.MAX_VALUE))
+                .addGap(217, 217, 217)
+                .addComponent(jButton4)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(95, 95, 95)
+                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(113, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addGap(117, 117, 117)
                 .addComponent(jLabel15)
-                .addGap(18, 18, 18)
+                .addGap(51, 51, 51)
+                .addComponent(jLabel17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton4)
-                .addGap(64, 64, 64)
-                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton5)
-                .addContainerGap(379, Short.MAX_VALUE))
+                .addContainerGap(376, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("        Generate and Plot      ", jPanel4);
@@ -595,25 +580,34 @@ public class SearchANDSortGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
-        XYSeries series = new XYSeries("XYGraph");
-        for (int i = 0; i <= 20; i++) {
-            int[] a = new int[i * 1000];
+        XYSeries series = new XYSeries("Linear Search");
+        XYSeries series1 = new XYSeries("Exchange Sort");
+        for (int i = 0; i <= 30; i++) {
+            int[] a = new int[i * 200];
             fillArray(a);
             int x =  i + (int)(Math.random()*1000);
+            
+            //linear search
             long start = System.nanoTime();
-            LinearSearch.linearSearch(a,x);
+            LinearSearch.linearSearch(a,-1);
             long end = System.nanoTime();
             long time = end - start;
-            series.add(a.length, time);
+            series.add(a.length, time); 
+            
+            long start1 = System.nanoTime();
+            ExchangeSort.exchangeSort(a);
+            long end1 = System.nanoTime();
+            long time1 = end1 - start1;
+            series1.add(a.length, time1);  
         }
 
         // Add the series to your data set
         XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(series);
+         dataset.addSeries(series1);
         // Generate the graph
         JFreeChart chart = ChartFactory.createXYLineChart(
-            "Searching with Linear Search",                // Title
+            "Linear and Exchange ",                // Title
             "Array Size",                  // x-axis Label
             "Searching Time",                  // y-axis Label
             dataset,                   // Dataset
@@ -631,48 +625,11 @@ public class SearchANDSortGUI extends javax.swing.JFrame {
         plotFrame.setContentPane(chartPanel);
         plotFrame.setSize(500, 500);
         plotFrame.setVisible(true);
+        
     }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        XYSeries series = new XYSeries("XYGraph");
-        // Generate 20 arrays with random values
-        for (int i = 1; i <=20; i++) {
-            int[] a = new int[i * 1000];
-            fillArray(a);
-            long start = System.nanoTime();
-            ExchangeSort.exchangeSort( a);
-            long end = System.nanoTime();
-            long time = end - start;
-            series.add(a.length, time);
-        }
-
-        // Add the series to your data set
-        XYSeriesCollection dataset = new XYSeriesCollection();
-        dataset.addSeries(series);
-        // Generate the graph
-        JFreeChart chart = ChartFactory.createXYLineChart(
-            "Sorting with Exchange Sort",                // Title
-            "Array Size",                  // x-axis Label
-            "Sorting Time",                  // y-axis Label
-            dataset,                   // Dataset
-            PlotOrientation.VERTICAL,  // Plot Orientation
-            true,                      // Show Legend
-            true,                      // Use tooltips
-            false                      // Configure chart to generate URLs?
-        );
-        // we put the chart into a panel
-        ChartPanel chartPanel = new ChartPanel(chart);
-        // default size
-        chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
-        // add it to our application
-        JFrame plotFrame = new JFrame("Plot");
-        plotFrame.setContentPane(chartPanel);
-        plotFrame.setSize(500, 500);
-        plotFrame.setVisible(true);
-    }//GEN-LAST:event_jButton5ActionPerformed
   public static void fillArray(int[] a) {
     for (int i = 0; i < a.length; i++) {
-      a[i] =  (int) (Math.random() * 100);
+      a[i] =  (int) (Math.random() * 1000);
     }
   }
     
@@ -717,7 +674,6 @@ public class SearchANDSortGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -725,7 +681,7 @@ public class SearchANDSortGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
