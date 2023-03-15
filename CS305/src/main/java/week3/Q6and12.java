@@ -6,7 +6,8 @@ package week3;
  */
 public class Q6and12 {
     public static void main(String[] args) {
-        
+//        int [] a = new int[]{1,5,9,0,2,3};
+//          MinMaxO(a);
     } 
    public static void sortKN(int[]arr){
       int max = 0;
@@ -23,19 +24,27 @@ public class Q6and12 {
           }
       }
     } 
-  public static void MinMaxO(int[]a){
-       int min = Integer.MAX_VALUE;
-       int max = Integer.MIN_VALUE;
-       for(int i=0;i<a.length;++i){
-            if(a[i]>max) max=a[i];
-            if (a[i]<min)min=a[i];
-            if(min>max){
-               int temp = max;
-               max=min;
-               min=temp;
+  public static String MinMaxO(int[]a){
+        int min,max;
+        min = a[0]; max = a[1];
+        if(min>max){
+          int temp = min;
+          min = max;
+          max = temp;
+        }
+        if(a.length == 2){
+            return "Min = "+min + "  Max = "+max;
+        }
+       for(int i=2;i<a.length/2;i+=2){
+            if(a[i]>a[i+1] && a[i]>max) {
+                max=a[i];
+                if(a[i+1]<min && min<max){min = a[i+1];}                 
+            }
+            if(a[i]<a[i+1] && a[i+1]>max) {
+                max=a[i+1];
+                if(a[i]<min && min<max){min = a[i];}                 
             }
         } 
-       System.out.println("Min = "+min);
-       System.out.println("Max = "+max);
+       return "Min = "+min + "  Max = "+max;
   }
 }
