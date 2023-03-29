@@ -370,7 +370,7 @@ public class SearchAndFibonacciGUI extends javax.swing.JFrame {
     }
     String m = jTextField1.getText();
     int x = Integer.parseInt(m);
-     long start = System.nanoTime();
+    long start = System.nanoTime();
     String res = search.binarySearch(a,x);
     long end = System.nanoTime();
     jTextField2.setText(res);
